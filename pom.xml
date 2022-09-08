@@ -13,6 +13,7 @@
         <module>mybatis-spring-boot-demo</module>
         <module>springboot-rabbitmq-consumer</module>
         <module>springboot-rabbitmq-producer</module>
+        <module>webflux-spring-boot-demo</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

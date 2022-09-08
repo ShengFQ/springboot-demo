@@ -18,4 +18,19 @@ public interface EsConsts {
      * 类型名称
      */
     String TYPE_NAME = "goods";
+
+    String PROPERTY_TITLE = "title";
+
+    String PROPERTY_ID = "id";
+
+    String PROPERTY_COMMIT = "commit";
+
+    String PROPERTY_SHOP = "shop";
+
+    String PROPERTY_PROVINCE = "province";
+
+    String DOC_ID_PREFIX = "100";
+
+    String INDEX_NAME_DEMO = "demo_index";
+
 }

@@ -17,9 +17,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <elasticsearch.clent.version>6.5.3</elasticsearch.clent.version>
+        <spring.data.elasticsearch.verion>2.3.6.RELEASE</spring.data.elasticsearch.verion>
     </properties>
     <dependencies>
-        <!--该jar包含了一个auto_configuration机制的插件包-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -28,10 +29,12 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.clent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <version>${spring.data.elasticsearch.verion}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>

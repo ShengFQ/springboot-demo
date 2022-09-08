@@ -27,10 +27,13 @@ public class JsoupUtils {
         Elements elements=element.getElementsByTag("li");
         List<WebContent> list=new ArrayList<>();
         for (Element el:elements){
-            String img=el.getElementsByTag("img").eq(0).attr("data-lazy-img");
-            String price=el.getElementsByClass("p-price").eq(0).text();
-            String title=el.getElementsByClass("p-name").eq(0).text();
-            WebContent webContent=WebContent.builder().img(img).price(price).title(title).build();
+            String img = el.getElementsByTag("img").eq(0).attr("data-lazy-img");
+            String price = el.getElementsByClass("p-price").eq(0).text();
+            String title = el.getElementsByClass("p-name").eq(0).text();
+            String commit = el.getElementsByClass("p-commit").eq(0).text();
+            String shop = el.getElementsByClass("p-shop").eq(0).text();
+            String province = el.getElementsByClass("p-stock").eq(0).attr("data-province");
+            WebContent webContent = WebContent.builder().img(img).price(price).title(title).commit(commit).shop(shop).province(province).build();
             list.add(webContent);
         }
         return list;

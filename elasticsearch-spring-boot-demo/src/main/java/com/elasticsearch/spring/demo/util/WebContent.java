@@ -28,4 +28,19 @@ public class WebContent implements Serializable {
     private String price;
     @Field(type = FieldType.Keyword)
     private String title;
+    /**
+     * 评价数量
+     */
+    @Field(type = FieldType.Keyword)
+    private String commit;
+    /**
+     * 商品店
+     */
+    @Field(type = FieldType.Keyword)
+    private String shop;
+    /**
+     * 商品供货地
+     */
+    @Field(type = FieldType.Keyword)
+    private String province;
 }

@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class MybatisSpringDemoApplication{
+public class ElasticSearchApplication {
     /**
      * 默认线程池
      */
 
 
     public static void main(String[] args) {
-        SpringApplication.run(MybatisSpringDemoApplication.class, args);
+        SpringApplication.run(ElasticSearchApplication.class, args);
     }
 }
