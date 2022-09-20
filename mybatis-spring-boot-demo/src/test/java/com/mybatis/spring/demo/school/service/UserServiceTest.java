@@ -4,7 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mybatis.spring.demo.school.entity.User;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,6 +18,7 @@ public class UserServiceTest {
 
     @Resource(name = "schoolDataSource")
     javax.sql.DataSource dataSource;
+
     @Test
     public void contextLoads() throws SQLException {
         System.out.println("当前连接池名称:");

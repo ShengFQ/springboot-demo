@@ -1,7 +1,8 @@
-package com.shengfq.webflux;
+package com.shengfq.pss;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WebfluxSpringBootDemoApplicationTests {
+class PhotoSpringBootDemoApplicationTests {
+
 }

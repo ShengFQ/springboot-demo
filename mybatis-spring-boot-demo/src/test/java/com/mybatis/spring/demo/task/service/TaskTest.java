@@ -4,7 +4,7 @@ import com.mybatis.spring.demo.pool.ExecuteTaskUtils;
 import com.mybatis.spring.demo.pool.ICallback;
 import com.mybatis.spring.demo.pool.ITask;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;

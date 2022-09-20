@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shengfq.pss.mapper.JzUserJgzMapper">
+  <resultMap id="BaseResultMap" type="com.shengfq.pss.entity.JzUserJgz">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="jycode" jdbcType="VARCHAR" property="jycode" />
+    <result column="zmlj" jdbcType="VARCHAR" property="zmlj" />
+    <result column="fmlj" jdbcType="VARCHAR" property="fmlj" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

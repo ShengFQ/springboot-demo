@@ -3,8 +3,7 @@ package com.mybatis.spring.demo.cms.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mybatis.spring.demo.cms.entity.NewsInfo;
-import com.mybatis.spring.demo.cms.service.NewsInfoService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

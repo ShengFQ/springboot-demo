@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shengfq.pss.mapper.StUserPhotoMapper">
+  <resultMap id="BaseResultMap" type="com.shengfq.pss.entity.StUserPhoto">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PHOTO_ID" jdbcType="BIGINT" property="photoId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="PHOTO_TYPE" jdbcType="CHAR" property="photoType" />
+    <result column="PHOTO_NAME" jdbcType="VARCHAR" property="photoName" />
+    <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
+    <result column="CREATETIME" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UPDATOR" jdbcType="VARCHAR" property="updator" />
+    <result column="UPDATETIME" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="PHOTO" jdbcType="LONGVARBINARY" property="photo" />
+  </resultMap>
+</mapper>

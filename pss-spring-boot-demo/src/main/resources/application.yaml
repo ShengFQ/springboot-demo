@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: root
+    password: 1qazXSW@
+    url: jdbc:mysql://127.0.0.1:3306/zijinchakongnew?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 9090
+
+mybatis-plus:
+  # 控制台打印sql语句
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
