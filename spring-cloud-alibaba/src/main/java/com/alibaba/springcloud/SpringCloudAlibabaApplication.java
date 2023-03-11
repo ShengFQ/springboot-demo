@@ -1,12 +1,13 @@
-package com.shengfq.webflux;
+package com.alibaba.springcloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebfluxSpringBootDemoApplication {
+public class SpringCloudAlibabaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebfluxSpringBootDemoApplication.class, args);
+        SpringApplication.run(SpringCloudAlibabaApplication.class, args);
     }
+
 }

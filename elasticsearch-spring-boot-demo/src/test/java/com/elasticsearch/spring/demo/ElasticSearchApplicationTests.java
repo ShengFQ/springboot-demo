@@ -6,13 +6,15 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-
+@RunWith(SpringRunner.class)
 @SpringBootTest
-class MybatisSpringDemoApplicationTests {
+class ElasticSearchApplicationTests {
 
     @Autowired
     RestHighLevelClient client;
@@ -27,4 +29,11 @@ class MybatisSpringDemoApplicationTests {
         // 响应状态
         System.out.println("操作状态 = " + acknowledged);
     }
+
+
+    /**
+     *条件是或关系  满足一个即可
+     * 使用Elasticsearch的原生查询对象进行查询
+     */
+
 }
