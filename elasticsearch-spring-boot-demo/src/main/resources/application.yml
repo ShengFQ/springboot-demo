@@ -1,0 +1,18 @@
+server:
+  port: 9090
+
+#spring
+spring:
+  application:
+    name: springboot-elasticsearch
+
+elasticsearch:
+  address: localhost:9201
+  #username: elastic
+  #password: 123456
+  schema: http
+  connectTimeout: 5000
+  socketTimeout: 5000
+  connectionRequestTimeout: 5000
+  maxConnectNum: 100
+  maxConnectPerRoute: 100

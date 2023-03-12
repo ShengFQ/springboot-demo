@@ -1,5 +1,6 @@
 package com.elasticsearch.spring.demo.util;
 
+import com.elasticsearch.spring.demo.entity.WebContent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,8 +33,9 @@ public class JsoupUtils {
             String title = el.getElementsByClass("p-name").eq(0).text();
             String commit = el.getElementsByClass("p-commit").eq(0).text();
             String shop = el.getElementsByClass("p-shop").eq(0).text();
+            String tags = el.getElementsByClass("p-icons").eq(0).text();
             String province = el.getElementsByClass("p-stock").eq(0).attr("data-province");
-            WebContent webContent = WebContent.builder().img(img).price(price).title(title).commit(commit).shop(shop).province(province).build();
+            WebContent webContent = WebContent.builder().img(img).price(price).title(title).commit(commit).shop(shop).tags(tags).province(province).build();
             list.add(webContent);
         }
         return list;

@@ -22,12 +22,15 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
+        <spring.boot.version>2.3.0.RELEASE</spring.boot.version>
         <mysql.version>8.0.21</mysql.version>
         <hutool.version>5.4.5</hutool.version>
         <guava.version>29.0-jre</guava.version>
         <user.agent.version>1.20</user.agent.version>
         <mybatis.version>1.3.2</mybatis.version>
+        <elasticsearch.version>7.10.1</elasticsearch.version>
+        <elasticsearch.clent.version>7.10.1</elasticsearch.clent.version>
+        <spring.data.elasticsearch>2.3.0.RELEASE</spring.data.elasticsearch>
         <aliyun-spring-boot.version>1.0.0</aliyun-spring-boot.version>
         <spring-cloud-alibaba.version>2.2.10-RC1</spring-cloud-alibaba.version>
     </properties>
@@ -46,11 +49,11 @@
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
-            <!--<dependency>
+            <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
-            </dependency>-->
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-devtools</artifactId>
@@ -73,18 +76,33 @@
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                <version>6.5.3</version>
+                <version>${elasticsearch.clent.version}</version>
+                <!--<exclusions>
+                    <exclusion>
+                        <groupId>org.elasticsearch</groupId>
+                        <artifactId>elasticsearch</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.elasticsearch.client</groupId>
+                        <artifactId>elasticsearch-rest-client</artifactId>
+                    </exclusion>
+                </exclusions>-->
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${elasticsearch.clent.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-                <version>2.3.0.RELEASE</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.elasticsearch.client</groupId>
-                        <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>${spring.data.elasticsearch}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>

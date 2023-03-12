@@ -1,5 +1,6 @@
-package com.elasticsearch.spring.demo.util;
+package com.elasticsearch.spring.demo.entity;
 
+import com.elasticsearch.spring.demo.util.EsConsts;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -43,4 +44,9 @@ public class WebContent implements Serializable {
      */
     @Field(type = FieldType.Keyword)
     private String province;
+    /**
+     * 标签
+     * */
+    @Field(type = FieldType.Keyword)
+    private String tags;
 }
