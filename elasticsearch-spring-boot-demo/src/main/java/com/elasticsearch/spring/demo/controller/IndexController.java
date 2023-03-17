@@ -1,5 +1,6 @@
 package com.elasticsearch.spring.demo.controller;
 
+import com.elasticsearch.spring.demo.entity.WebContent;
 import com.elasticsearch.spring.demo.service.IndexService;
 import com.elasticsearch.spring.demo.service.WebContentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class IndexController {
      * 所有数据
      */
     @GetMapping("/all")
-    public List<Map<String, Object>> all() throws Exception {
+    public List<WebContent> all() throws Exception {
         return webContentService.all();
     }
 

@@ -129,8 +129,8 @@ public class WebContentService {
      * 根据关键字检索数据集
      * 全量查询,排序,过滤字段
      */
-    public List<Map<String, Object>> all() throws IOException {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public List<WebContent> all() throws IOException {
+        List<WebContent> result = new ArrayList<>();
         //1.查询索引中的全部文档 --- matchAllQuery 全量查询
         //创建搜索请求对象
         SearchRequest request = new SearchRequest();
@@ -156,7 +156,7 @@ public class WebContentService {
         //遍历结果集
         //解析结果
         for (SearchHit searchHit : response.getHits().getHits()) {
-            result.add(searchHit.getSourceAsMap());
+            result.add(JSON.parseObject(searchHit.getSourceAsString(),WebContent.class));
         }
         return result;
     }

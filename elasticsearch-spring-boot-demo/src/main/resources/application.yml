@@ -5,7 +5,11 @@ server:
 spring:
   application:
     name: springboot-elasticsearch
-
+  datasource:
+    url: jdbc:mysql://localhost:3306/ess_cms_db?characterEncoding=utf8&connectTimeout=1000&socketTimeout=30000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai
+    name: root
+    password: 1qazXSW@
+    driver-class-name: com.mysql.cj.jdbc.Driver
 elasticsearch:
   address: localhost:9201
   #username: elastic
