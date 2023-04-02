@@ -1,0 +1,12 @@
+# 应用名称
+spring:
+  application:
+    name: spring-boot-mongodb
+data:
+mongodb:
+host: localhost
+port: 27017
+database: article_db
+logging:
+level:
+org.springframework.data.mongodb.core: debug
