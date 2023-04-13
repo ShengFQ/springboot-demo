@@ -1,8 +1,11 @@
-package io.shengfq.fastdfs;
+package io.shengfq.fastdfs.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import io.shengfq.fastdfs.common.Request;
 import io.shengfq.fastdfs.service.UploadService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,14 +17,27 @@ import org.springframework.web.multipart.MultipartFile;
  * @date: 2023/3/26 12:30 下午
  */
 @RestController
+@Scope("prototype")
 public class IndexController {
     @Autowired
     public UploadService uploadService;
 
+    @GetMapping(value = "/login")
+    public String login(
+            @RequestParam(value = "sign") String sign,
+            @RequestParam(value = "timestamp") String timestamp,
+            @RequestParam(value = "data") String data
+    ) throws Exception {
+        Request request = new Request();
+        request.setData(data);
+        request.setTimestamp(timestamp);
+        request.setSign(sign);
+        return JSONObject.toJSONString(request);
+    }
 
     @GetMapping(value = "/index/{resource}")
-    public String index(@PathVariable(value = "resource") String resource){
-        System.out.println("resource:"+resource);
+    public String index(@PathVariable(value = "resource") String resource) {
+        System.out.println("resource:" + resource);
         return resource;
     }
 
