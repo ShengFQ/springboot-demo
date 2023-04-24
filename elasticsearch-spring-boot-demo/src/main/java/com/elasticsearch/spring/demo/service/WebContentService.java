@@ -2,6 +2,8 @@ package com.elasticsearch.spring.demo.service;
 
 
 import com.alibaba.fastjson.JSON;
+import com.elasticsearch.spring.demo.dto.req.NewsSearchView;
+import com.elasticsearch.spring.demo.dto.req.WebContentReq;
 import com.elasticsearch.spring.demo.entity.WebContent;
 import com.elasticsearch.spring.demo.util.EsConsts;
 import com.elasticsearch.spring.demo.util.JsoupUtils;
@@ -25,14 +27,27 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static com.elasticsearch.spring.demo.util.EsConsts.INDEX_NAME;
 
 /**
  * ClassName: WebContentService
@@ -46,7 +61,8 @@ import java.util.concurrent.TimeUnit;
 public class WebContentService {
     @Autowired
     RestHighLevelClient restHighLevelClient;
-
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
     /**
      * 批量添加文档
      * 搜索关键字爬虫
@@ -56,7 +72,7 @@ public class WebContentService {
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.timeout("2m");
         for (int i = 0; i < list.size(); i++) {
-            bulkRequest.add(new IndexRequest(EsConsts.INDEX_NAME).type(EsConsts.TYPE_NAME).id(EsConsts.DOC_ID_PREFIX + i).source(JSON.toJSONString(list.get(i)), XContentType.JSON));
+            bulkRequest.add(new IndexRequest(INDEX_NAME).type(EsConsts.TYPE_NAME).id(EsConsts.DOC_ID_PREFIX + i).source(JSON.toJSONString(list.get(i)), XContentType.JSON));
         }
         //批量插入数据记录
         BulkResponse responses = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
@@ -68,7 +84,7 @@ public class WebContentService {
      */
     public int delete(String docId) throws IOException {
         DeleteRequest request = new DeleteRequest();
-        request.index(EsConsts.INDEX_NAME).type(EsConsts.TYPE_NAME).id(docId);
+        request.index(INDEX_NAME).type(EsConsts.TYPE_NAME).id(docId);
         DeleteResponse response = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
         byte op = response.getResult().getOp();
         log.info("delete by id result:{}", op);
@@ -82,7 +98,7 @@ public class WebContentService {
         int result = 0;
         BulkRequest request = new BulkRequest();
         for (int i = 0; i < 20; i++) {
-            request.add(new DeleteRequest().index(EsConsts.INDEX_NAME).type(EsConsts.TYPE_NAME).id(EsConsts.DOC_ID_PREFIX + i));
+            request.add(new DeleteRequest().index(INDEX_NAME).type(EsConsts.TYPE_NAME).id(EsConsts.DOC_ID_PREFIX + i));
         }
         BulkResponse response = null;
         try {
@@ -106,7 +122,7 @@ public class WebContentService {
     public List<Map<String, Object>> search(String keyword, int pageNo, int pageSize) throws IOException {
         List<Map<String, Object>> result = new ArrayList<>();
         //创建请求
-        SearchRequest searchRequest = new SearchRequest(EsConsts.INDEX_NAME);
+        SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         //分页参数
         sourceBuilder.from(pageNo);
@@ -135,7 +151,7 @@ public class WebContentService {
         //创建搜索请求对象
         SearchRequest request = new SearchRequest();
         //设置参数 --- 表示查询哪个索引中的文档内容
-        request.indices(EsConsts.INDEX_NAME);
+        request.indices(INDEX_NAME);
         request.types((EsConsts.TYPE_NAME));
         //构建查询的请求体 --- 存入搜索请求对象中
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder().query(QueryBuilders.matchAllQuery());
@@ -167,7 +183,7 @@ public class WebContentService {
     public List<Map<String, Object>> searchByCondition(String keyword) throws IOException {
         List<Map<String, Object>> result = new ArrayList<>();
         //创建请求
-        SearchRequest searchRequest = new SearchRequest(EsConsts.INDEX_NAME);
+        SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         //组合条件查询匹配模式
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -189,7 +205,7 @@ public class WebContentService {
     public List<Map<String, Object>> searchByGroup() throws IOException {
         List<Map<String, Object>> result = new ArrayList<>();
         //创建请求
-        SearchRequest searchRequest = new SearchRequest(EsConsts.INDEX_NAME);
+        SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         //组合条件查询匹配模式
         AggregationBuilder aggregationBuilder = AggregationBuilders.terms("provinceGroup").field(EsConsts.PROPERTY_PROVINCE);
@@ -204,4 +220,68 @@ public class WebContentService {
     }
 
 
+    /**
+     * 分词查询
+     *
+     * @param newsSearchDto
+     * @return
+     */
+    public NewsSearchView search(WebContentReq newsSearchDto) {
+        Integer pageSize = 10;
+        //创建bool查询
+        BoolQueryBuilder filterCaseBuilder = QueryBuilders.boolQuery();
+
+        //分词查询
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
+        query.should(QueryBuilders.matchQuery("title", newsSearchDto.getTitle()));
+        query.should(QueryBuilders.matchQuery("content", newsSearchDto.getTitle()));
+
+        //条件过滤
+        filterCaseBuilder.filter(QueryBuilders.termQuery("status", 1));
+        filterCaseBuilder.filter(QueryBuilders.rangeQuery("add_date").lte(LocalDate.now()));
+        filterCaseBuilder.must(query);
+
+        //排序
+        ScoreSortBuilder scoreSortBuilder = new ScoreSortBuilder();
+        FieldSortBuilder addDateSortBuilder = SortBuilders.fieldSort("year").order(SortOrder.DESC);
+
+        //分词高亮
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("title").field("content").preTags("<span class=\"highlight\">").postTags("</span>");
+
+        //分页
+        Integer page = newsSearchDto.getPageNo() / pageSize;
+        Pageable pageOf = PageRequest.of(page, pageSize);
+
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(filterCaseBuilder)
+                .withSort(addDateSortBuilder)
+                .withSort(scoreSortBuilder)
+                .withHighlightBuilder(highlightBuilder)
+                .withPageable(pageOf)
+                .build();
+
+        NewsSearchView pageInfo = new NewsSearchView();
+        /*try {
+            List<WebContent> newsList = elasticsearchRestTemplate.query(searchQuery, response -> {
+                SearchHits hits = response.getHits();
+                long totalHits = hits.totalHits;
+                int totalPage = PageUtil.totalPage((int) totalHits, pageSize);
+                pageInfo.setTotalNum(totalHits);
+                pageInfo.setTotalPage(totalPage);
+                List<NewsView> list = new ArrayList<>();
+                Arrays.stream(hits.getHits()).forEach(hit -> {
+                    Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+                    dealHighlight(hit, sourceAsMap);
+                    NewsView aopHandlerLogRsp = JSON.parseObject(JSON.toJSONString(sourceAsMap), NewsView.class);
+                    list.add(aopHandlerLogRsp);
+                });
+                return list;
+            });
+            pageInfo.setList(newsList);
+        } catch (ElasticsearchException e) {
+            log.error("ES查询错误", e);
+        }*/
+        return pageInfo;
+    }
 }

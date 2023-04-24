@@ -1,5 +1,7 @@
 package com.elasticsearch.spring.demo.dto.req;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @author shengfq
  * @date: 2023/3/11 5:48 下午
  */
+@Data
 public class WebContentReq implements Serializable {
     /**
      * 价格
@@ -30,4 +33,8 @@ public class WebContentReq implements Serializable {
      * 商品供货地
      */
     private String province;
+
+    private Integer pageNo;
+
+    private Integer pageSize;
 }

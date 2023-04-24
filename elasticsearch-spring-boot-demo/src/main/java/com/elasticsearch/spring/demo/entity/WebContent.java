@@ -23,21 +23,21 @@ import java.io.Serializable;
 public class WebContent implements Serializable {
     @Id
     private Long id;
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String img;
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String price;
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text, store = true, analyzer = "ik_smart")
     private String title;
     /**
      * 评价数量
      */
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String commit;
     /**
      * 商品店
      */
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String shop;
     /**
      * 商品供货地

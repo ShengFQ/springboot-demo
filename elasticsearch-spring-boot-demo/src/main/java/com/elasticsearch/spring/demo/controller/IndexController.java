@@ -1,12 +1,12 @@
 package com.elasticsearch.spring.demo.controller;
 
+import com.elasticsearch.spring.demo.dto.req.NewsSearchView;
+import com.elasticsearch.spring.demo.dto.req.WebContentReq;
 import com.elasticsearch.spring.demo.entity.WebContent;
 import com.elasticsearch.spring.demo.service.IndexService;
 import com.elasticsearch.spring.demo.service.WebContentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -99,4 +99,9 @@ public class IndexController {
         return webContentService.searchByGroup();
     }
 
+    @PostMapping("do/s")
+    public NewsSearchView search(@RequestBody WebContentReq newsSearchDto) {
+        NewsSearchView newsSearchView = webContentService.search(newsSearchDto);
+        return newsSearchView;
+    }
 }
