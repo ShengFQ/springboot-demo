@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import io.shengfq.aop.event.custom.CustomSpringEvent;
 
 /**
- * 事件发布器
+ * 自定义事件的,事件发布器
+ *
+ * @author sheng
  */
 
 @Component
@@ -20,8 +22,9 @@ public class CustomSpringEventPublisher {
   private ApplicationEventPublisher applicationEventPublisher;
 
   public void publishCustomEvent(final String message) {
-    log.info("Publishing custom event. ");
+    log.info("发布 CustomSpringEvent 事件 消息{}. ", message);
     CustomSpringEvent customSpringEvent = new CustomSpringEvent(this, message);
     applicationEventPublisher.publishEvent(customSpringEvent);
   }
+
 }

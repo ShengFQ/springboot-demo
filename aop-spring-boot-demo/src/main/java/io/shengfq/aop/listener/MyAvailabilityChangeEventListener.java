@@ -19,7 +19,7 @@ public class MyAvailabilityChangeEventListener
 
   @Override
   public void onApplicationEvent(AvailabilityChangeEvent event) {
-    log.info("监听到事件：" + event);
+    log.info("监听到事件：{}", event);
     if (ReadinessState.ACCEPTING_TRAFFIC == event.getState()) {
       log.info("应用启动完成，可以请求了……");
     }

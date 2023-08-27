@@ -8,16 +8,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.shengfq.aop.publish.CustomSpringEventPublisher;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @SpringBootApplication
-public class SpringBootDemoApplication {
+public class AopSpringBootDemoApplication {
   @Autowired
   CustomSpringEventPublisher customSpringEventPublisher;
 
   public static void main(String[] args) {
     try {
-      SpringApplication.run(SpringBootDemoApplication.class, args);
+      SpringApplication.run(AopSpringBootDemoApplication.class, args);
+      log.debug("aop-spring-boot-application 启动成功了");
     } catch (Exception e) {
       e.printStackTrace();
     }
