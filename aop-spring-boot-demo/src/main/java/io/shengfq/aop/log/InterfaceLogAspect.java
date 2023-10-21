@@ -8,8 +8,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -34,15 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class InterfaceLogAspect {
 
-  private static final Logger logger = LoggerFactory.getLogger(InterfaceLogAspect.class);
-
   @Autowired
   private InterfaceLogService interfaceLogService;
 
   /** 以自定义 @InterfaceLog 注解为切点 */
   @Pointcut("@annotation(io.shengfq.aop.log.InterfaceLog)")
   public void interfaceLog() {
-    logger.debug("InterfaceLog Pointcut");
+    log.debug("InterfaceLog Pointcut");
   }
 
   /**
