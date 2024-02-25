@@ -1,0 +1,2 @@
+# springboot自动装配机制 会读取该配置 进行自动装配
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = com.shengfq.log.autoconfigure.LogAutoConfigure
