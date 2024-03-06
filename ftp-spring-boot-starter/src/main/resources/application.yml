@@ -1,7 +1,7 @@
 ftp:
   client:
     enabled: true
-    port: 60021
-    host: ftpqas.sanygroup.com
-    username:
-    password:
+    port: xxxx
+    host: xxxx
+    username: xxxx
+    password: xxxx
