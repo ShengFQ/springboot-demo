@@ -1,10 +1,10 @@
-package com.shengfq.eureka;
+package com.shengfq.flinkcdc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringCloudEurekaServerApplicationTests {
+class FlinkcdcSpringBootDemoApplicationTests {
 
     @Test
     void contextLoads() {

@@ -24,6 +24,7 @@
         <module>mongodb-spring-boot-demo</module>
         <module>netty-spring-boot-demo</module>
         <module>spring-cloud-eureka-server</module>
+        <module>flinkcdc-spring-boot-demo</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
