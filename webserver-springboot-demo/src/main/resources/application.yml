@@ -1,0 +1,13 @@
+server:
+  port: 8081
+  tomcat:
+    threads:
+      min-spare: 2 #最少线程数
+      max: 5 #最多线程数
+    max-connections: 10 #最大连接数
+    accept-count: 2 #最大等待数
+  shutdown: graceful
+  graceful-shutdown-timeout: 30s
+spring:
+  application:
+    name: spring-tomcat
