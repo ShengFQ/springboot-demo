@@ -1,0 +1,28 @@
+spring:
+  jta:
+    enabled: true
+    atomikos:
+      datasource:
+        primary:
+          xa-properties:
+            url: jdbc:mysql://localhost:3306/ds_0
+            user: root
+            password: 1qazXSW@
+            driver-class-name: com.mysql.cj.jdbc.Driver
+        secondary:
+          xa-properties:
+            url: jdbc:mysql://localhost:3306/ds_1
+            user: root
+            password: 1qazXSW@
+            driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    primary:
+#      jdbc-url: jdbc:mysql://localhost:3306/ds_0
+#      username: root
+#      password: 1qazXSW@
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#    secondary:
+#      jdbc-url: jdbc:mysql://localhost:3306/ds_1
+#      username: root
+#      password: 1qazXSW@
+#      driver-class-name: com.mysql.cj.jdbc.Driver
