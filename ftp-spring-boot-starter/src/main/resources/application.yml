@@ -1,7 +1,7 @@
 ftp:
   client:
     enabled: true
-    port: xxxx
+    port: 1234
     host: xxxx
     username: xxxx
     password: xxxx
