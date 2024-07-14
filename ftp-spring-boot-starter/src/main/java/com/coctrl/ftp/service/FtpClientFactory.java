@@ -10,22 +10,18 @@ import org.apache.commons.net.util.TrustManagerUtils;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import com.coctrl.ftp.configuration.FtpClientProperties;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
 @ConditionalOnProperty(prefix = "ftp.client", value = "enabled", matchIfMissing = true)
 public class FtpClientFactory extends BasePooledObjectFactory<FTPSClient> {
 
   private FtpClientProperties config;
 
-  @Autowired
   public FtpClientFactory(FtpClientProperties config) {
     this.config = config;
   }
