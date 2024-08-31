@@ -6,15 +6,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.coctrl.ftp.CommonException;
@@ -22,18 +19,16 @@ import com.coctrl.ftp.CommonException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
 public class FtpClientTemplate {
   public final String ROOT_PATH = File.separator + "domestic2" + File.separator + "mom";
   private final GenericObjectPool<FTPSClient> ftpClientPool;
 
-  @Resource
   private FtpClientFactory ftpClientFactory;
 
-  @Autowired
   public FtpClientTemplate(FtpClientFactory ftpClientFactory) {
     this.ftpClientPool = new GenericObjectPool<>(ftpClientFactory);
     this.ftpClientPool.setTestOnBorrow(true);
+    this.ftpClientFactory = ftpClientFactory;
   }
 
   @PreDestroy

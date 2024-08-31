@@ -1,0 +1,16 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: springcloud-eureka-client
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}
+    hostname: localhost
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8000/eureka/ #Eureka地址
