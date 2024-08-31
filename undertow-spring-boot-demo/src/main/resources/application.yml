@@ -1,0 +1,15 @@
+server:
+  undertow:
+    max-http-post-size: 1024
+    buffer-size: 1024
+    accesslog:
+      pattern: common
+      prefix: access_log.
+      rotate: true
+      suffix: log
+    always-set-keep-alive: true
+    max-cookies: 20
+    max-parameters: 3
+    threads:
+      io: 2
+      worker: 4
