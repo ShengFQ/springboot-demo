@@ -21,6 +21,7 @@ public class AopSpringBootDemoApplication {
   @Autowired
   CustomSpringEventPublisher customSpringEventPublisher;
 
+
   public static void main(String[] args) {
     try {
       SpringApplication.run(AopSpringBootDemoApplication.class, args);

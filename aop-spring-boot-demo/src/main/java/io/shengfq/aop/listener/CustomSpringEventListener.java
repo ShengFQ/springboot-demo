@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import io.shengfq.aop.domain.vo.InterfaceLogVo;
 import io.shengfq.aop.event.custom.CustomSpringEvent;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,8 @@ public class CustomSpringEventListener {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    onApplicationEvent6(event.getMessage());
+    InterfaceLogVo interfaceLogVo = new InterfaceLogVo();
+    interfaceLogVo.setRequestMsg(event.getMessage());
   }
 
   /**
