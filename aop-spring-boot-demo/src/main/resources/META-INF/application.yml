@@ -1,0 +1,232 @@
+spring:
+  shardingsphere:
+    enabled: false
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  application:
+    name: xxx
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://10.127.232.165:3306/xxx?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true}
+    username: ${SPRING_DATASOURCE_USERNAME:xxx}
+    password: ${SPRING_DATASOURCE_PASSWORD:xxx}
+    hikari:
+      # 连接池最小空闲连接数
+      minimum-idle: ${SPRING_DATASOURCE_MINIMUM_IDLE:20}
+      # 连接池允许的最大连接数
+      maximum-pool-size: ${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:200}
+      # 等待连接池分配连接的最大时长（毫秒）
+      connection-timeout: ${SPRING_DATASOURCE_CONNECTION_TIMEOUT:30000}
+  redis:
+    host: ${SPRING_REDIS_HOST:xxx}
+    port: ${SPRING_REDIS_PORT:6379}
+    database: ${SPRING_REDIS_DATABASE:1}
+    password: ${SPRING_REDIS_PASSWORD:xxx}
+    jedis:
+      pool:
+        # 资源池中最大连接数
+        # 默认8，-1表示无限制；可根据服务并发redis情况及服务端的支持上限调整
+        max-active: ${SPRING_REDIS_POOL_MAX_ACTIVE:50}
+        # 资源池运行最大空闲的连接数
+        # 默认8，-1表示无限制；可根据服务并发redis情况及服务端的支持上限调整，一般建议和max-active保持一致，避免资源伸缩带来的开销
+        max-idle: ${SPRING_REDIS_POOL_MAX_IDLE:50}
+        # 当资源池连接用尽后，调用者的最大等待时间(单位为毫秒)
+        # 默认 -1 表示永不超时，设置5秒
+        max-wait: ${SPRING_REDIS_POOL_MAX_WAIT:5000}
+  resources:
+    # 资源缓存时间，单位秒
+    cache.period: 3600
+    # 开启gzip压缩
+    chain.gzipped: true
+    # 启用缓存
+    chain.cache: true
+  flyway:
+    enabled: true
+    clean-disabled: true
+    sql-type: mysql   # mysql oracle sqlserver ...
+    locations: classpath:db/${spring.flyway.sql-type}/
+    table: flyway_schema_history_qm
+    baseline-on-migrate: true
+    baseline-version: 1
+    encoding: UTF-8
+    out-of-order: true
+    schemas: xxx_db
+    # 执行迁移时是否自动调用验证   当你的 版本不符合逻辑 比如 你先执行了 DML 而没有 对应的DDL 会抛出异常
+    validate-on-migrate: true
+  ##xxxQmThreadPoolTask线程池配置
+  task:
+    pool:
+      corePoolSize: 10
+      maxPoolSize: 20
+      keepAliveSeconds: 60
+      queueCapacity: 200
+      waitForTasksToCompleteOnShutdown: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:10.127.193.16}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:xxx}
+    virtual-host: ${RABBITMQ_VIRTUAL_HOST:VHOST_xxx}
+    operation-start-queue: ${OPERATION-START-QUEUE:queue.ixxx.qm.operationStart}
+    operation-end-queue: ${OPERATION-END-QUEUE:queue.ixxx.qm.operationEnd}
+    operation-end-code: ${OPERATION-END-CODE:140}
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 5
+          initial-interval: 500
+
+server:
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接
+    # 默认值为8，建议设置每个CPU核心一个线程
+    io-threads: ${SERVER_UNDERTOW_IO_THREADS:4}
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程
+    # 默认等于 io-threads*8，它的值设置取决于系统的负载，可适当调大该值
+    worker-threads: ${SERVER_UNDERTOW_WORKER_THREADS:128}
+    # 每块buffer的空间大小，越小空间被利用越充分
+    # 不要设置太大，以免影响其他应用，合适即可
+    buffer-size: ${SERVER_UNDERTOW_BUFFER_SIZE:1024}
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    # 默认false
+    direct-buffers: true
+    # HTTP POST请求最大的大小
+    # 默认0，无限制，可设置10M
+    max-http-post-size: 10485760
+    allow-unescaped-characters-in-url: true
+
+feign:
+  hystrix:
+    enabled: false # 关闭
+  tsf:
+    enable: true
+
+hystrix:
+  threadpool:
+    default:
+      # 执行命令线程池的核心线程数，也是命令执行的最大并发量LOGGER
+      # 默认10
+      coreSize: 1000
+      # 最大执行线程数
+      maximumSize: 1000
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            # HystrixCommand 执行的超时时间，超时后进入降级处理逻辑。一个接口，理论的最佳响应速度应该在200ms以内，或者慢点的接口就几百毫秒。
+            # 默认 1000 毫秒，最高设置 2000足矣。如果超时，首先看能不能优化接口相关业务、SQL查询等，不要盲目加大超时时间，否则会导致线程堆积过多，hystrix 线程池卡死，最终服务不可用。
+            timeoutInMilliseconds: ${HYSTRIX_COMMAND_TIMEOUT_IN_MILLISECONDS:40000}
+
+ribbon:
+  # 客户端读取超时时间，超时时间要小于Hystrix的超时时间，否则重试机制就无意义了
+  ReadTimeout: ${RIBBON_READ_TIMEOUT:30000}
+  # 客户端连接超时时间
+  ConnectTimeout: ${RIBBON_CONNECT_TIMEOUT:3000}
+  # 访问实例失败(超时)，允许自动重试，设置重试次数，失败后会更换实例访问，请一定确保接口的幂等性，否则重试可能导致数据异常。
+  OkToRetryOnAllOperations: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  ribbon.eager-load.enabled: true
+  ribbon.eager-load.clients: cloud-shop-userservice
+
+mybatis:
+  mapperLocations: classpath*:/mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
+    key-generator: snowflake
+    snowflake:
+      start-timestamp: 1577808000000
+      meta-provider: redis
+      meta-provider-redis-db: 1
+      meta-provider-redis-refresh-interval: 540000
+      meta-provider-redis-expire: 600000
+    log-impl: ${MYBATIS_LOG_IMPL:org.apache.ibatis.logging.stdout.StdOutImpl}
+
+logging:
+  config: classpath:logback-xxx.xml
+  level:
+  # org.hzero: ${LOG_LEVEL:all}
+
+xxx:
+  log:
+    path: /app/logs
+    max-file-size: 100MB
+    max-history: 3
+    total-size: 5GB
+    #日志历史记录保留天数
+    history: 10
+    #避免多实例日志文件同名导致 日志丢失 Tips极小概率随机数重复
+    randomId: ${random.int[1000,99999999]}
+  default:
+    tenantId: ${xxx_DEFAULT_TENANT_ID:2}
+    userId: ${xxx_DEFAULT_USER_ID:62}
+    isEdit: ${xxx_DEFAULT_ISEDIT_ID:0}
+  inspection:
+    day-shift-start: ${DAY_SHIFT_START:8}
+    day-shift-end: ${DAY_SHIFT_END:20}
+    day-shift-interval: ${DAY_SHIFT_INTERVAL:2}
+  task:
+    inspection:
+      warehouse:
+        prevention:
+          enable: ${xxx_TASK_INSPECTION_PREVENTION_ENABLE:true}
+  delayQueue:
+    enabled: ${xxx_DELAY_QUEUE_ENABLED:true}
+  domainName: ${xxx_DOMAIN_NAME:https://xxx}
+
+# tsf 本地调试配置
+tsf_consul_ip: 127.0.0.1
+tsf_consul_port: 8500
+tsf_application_id: ${spring.application.name}
+
+hzero:
+  export:
+    # 默认请求模式，允许的值 SYNC ASYNC，默认null
+    # 默认请求模式设置为同步，则所有调用均为同步调用；默认请求模式设置为异步，则所有调用均为异步调用
+    # 当defaultRequestMode="ASYNC" && enableAsync=false时，服务会启动报错
+    default-request-mode: SYNC
+    # 是否开启异步，默认为false
+    enable-async: false
+    # 异步阈值，若导出的数据总量超过该阈值，强制执行异步导出
+    async-threshold:
+    # 默认最大sheet数，默认值5
+    single-excel-max-sheet-num: 5
+    # 默认sheet页最大行数，默认值1000000
+    single-sheet-max-row: 20000
+    # 异步线程池核心线程数
+    core-pool-size: 3
+    # 异步线程池最大线程数
+    maximum-pool-size: 10
+    # 异步线程池线存活时间
+    keep-alive-time: 0
+    # 异步线程池线等待队列大小
+    queue-size:
+    # # 异步线程池线程名称
+    async-thread-name: async-export-executor
+  lov:
+    sql:
+      public-api-enabled: true
+    value:
+      enabled: true
+  scheduler:
+    executor-code: xxx_QM_EXECUTOR
+    auto-register: false
+    upload-log: false
+
+  cache-value:
+    enable: true
+  admin:
+    client:
+      retryInternal: 999999999999
+  lock:
+    pattern: single
+    singleServer:
+      address: ${SPRING_REDIS_HOST:10.127.224.220}
+      port: ${SPRING_REDIS_PORT:6379}
+      database: ${SPRING_REDIS_DATABASE:0}
+      password: ${SPRING_REDIS_PASSWORD:xxx}

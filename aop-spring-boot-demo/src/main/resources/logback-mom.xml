@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="600 seconds" debug="false">
+
+    <!--用于区分不同应用程序的记录-->
+    <contextName>${contextName}</contextName>
+
+    <!--日志文件所在目录，如果是tomcat，如下写法日志文件会在则为${TOMCAT_HOME}/bin/logs/目录下-->
+    <springProperty scope="context" name="contextName" source="spring.application.name"/>
+    <springProperty scope="context" name="LOG_HOME_LINUX" source="mom.log.path"/>
+    <springProperty scope="context" name="maxFileSize" source="mom.log.file"/>
+    <springProperty scope="context" name="maxHistory" source="mom.log.history"/>
+    <springProperty scope="context" name="totalSizeCap" source="mom.log.total"/>
+    <springProperty scope="context" name="randomId" source="mom.log.randomId" defaultValue="0"/>
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式   [%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} method:%l%n%m%n  -->
+    <property name="CONSOLE_LOG_MDC_PATTERN"
+              value="${CONSOLE_LOG_MDC_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [%X{tid}] %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{tid}] ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!--控制台-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!--    获取skywalking自动生成的tid    -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <pattern>${CONSOLE_LOG_MDC_PATTERN}</pattern>
+            </layout>
+
+        </encoder>
+    </appender>
+
+    <!--滚动文件-->
+    <appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME_LINUX}/${contextName}/${contextName}.%d{yyyy-MM-dd}-%i.${randomId}.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数（非持续运行情况下，15天外不会清理）-->
+            <maxHistory>10</maxHistory>
+            <!-- 应对服务非持续偶尔运行，日志清理机制无法触发而导致日志得不到清理的情况-->
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+
+    </appender>
+
+    <!--滚动文件 接口日志-->
+    <appender name="interfaceFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_HOME_LINUX}/${contextName}/${contextName}-interface.${randomId}-%d{yyyy-MM-dd}-%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数（非持续运行情况下，15天外不会清理）-->
+            <maxHistory>10</maxHistory>
+            <!-- 应对服务非持续偶尔运行，日志清理机制无法触发而导致日志得不到清理的情况-->
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.shengfq.mom.log.layout.InterfaceLogLayout"/>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="operationFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME_LINUX}/${contextName}/${contextName}-op.${randomId}-%d{yyyy-MM-dd}-%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数（非持续运行情况下，15天外不会清理）-->
+            <maxHistory>10</maxHistory>
+            <!-- 应对服务非持续偶尔运行，日志清理机制无法触发而导致日志得不到清理的情况-->
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.shengfq.mom.log.layout.OperationLogLayout"/>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--配置多环境日志输出  可以在application.properties中配置选择哪个profiles : spring.profiles.active=dev-->
+    <springProfile name="default">
+        <root level="info">
+            <appender-ref ref="stdout"/>
+            <!-- 为在本地测试日志输出到文件然后通过filebeat采集，此处同样输出到文件-->
+            <appender-ref ref="infoFile"/>
+        </root>
+    </springProfile>
+    <!--生产环境:输出到文件-->
+    <springProfile name="default">
+        <root level="info">
+            <appender-ref ref="infoFile"/>
+        </root>
+    </springProfile>
+
+    <logger name="interfaceLog" additivity="false" level="INFO">
+        <springProfile name="default">
+            <appender-ref ref="stdout"/>
+        </springProfile>
+        <appender-ref ref="interfaceFile"/>
+    </logger>
+
+    <logger name="operationLog" additivity="false" level="INFO">
+        <springProfile name="default">
+            <appender-ref ref="stdout"/>
+        </springProfile>
+        <appender-ref ref="operationFile"/>
+    </logger>
+
+</configuration>
