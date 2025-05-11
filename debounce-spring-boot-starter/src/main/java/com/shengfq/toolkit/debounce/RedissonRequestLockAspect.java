@@ -15,10 +15,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 
+import com.shengfq.toolkit.common.BizException;
+import com.shengfq.toolkit.common.ResponseCodeEnum;
+
 /**
  * @description 分布式锁实现
  */
-
 @Aspect
 @Configuration
 @Order(2)
@@ -40,8 +42,7 @@ public class RedissonRequestLockAspect {
     RequestLock requestLock = method.getAnnotation(RequestLock.class);
     if (StringUtils.isEmpty(requestLock.prefix())) {
       // 重复提交前缀不能为空
-      // throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "重复提交前缀不能为空");
-      logger.warn("重复提交前缀不能为空");
+      throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "重复提交前缀不能为空");
     }
     // 获取自定义key
     final String lockKey = RequestKeyGenerator.getLockKey(joinPoint);
@@ -54,26 +55,24 @@ public class RedissonRequestLockAspect {
       // 没有拿到锁说明已经有了请求了
       if (!isLocked) {
         logger.warn("您的操作太快了,请稍后重试");
-        // throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "您的操作太快了,请稍后重试");
+        throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "您的操作太快了,请稍后重试");
       }
       // 拿到锁后设置过期时间
       lock.lock(requestLock.expire(), requestLock.timeUnit());
       try {
         return joinPoint.proceed();
       } catch (Throwable throwable) {
-
         logger.warn("系统异常");
-        // throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "系统异常");
+        throw new BizException(ResponseCodeEnum.SYSTEM_EXCEPTION, "系统异常");
       }
     } catch (Exception e) {
-      logger.warn("您的操作太快了,请稍后重试");
-      // throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "您的操作太快了,请稍后重试");
+      logger.error("exception ", e);
+      throw new BizException(ResponseCodeEnum.BIZ_CHECK_FAIL, "您的操作太快了,请稍后重试");
     } finally {
       // 释放锁
       if (isLocked && lock.isHeldByCurrentThread()) {
         lock.unlock();
       }
     }
-    return null;
   }
 }
