@@ -26,8 +26,10 @@
         <module>spring-cloud-eureka-server</module>
         <module>flinkcdc-spring-boot-demo</module>
         <module>webserver-springboot-demo</module>
-        <module>multi-datasource-demo/jdbc-multi-datasource</module>-->
+        <module>multi-datasource-demo/jdbc-multi-datasource</module>
         <module>undertow-spring-boot-demo</module>
+        <module>debounce-spring-boot-starter</module>-->
+
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

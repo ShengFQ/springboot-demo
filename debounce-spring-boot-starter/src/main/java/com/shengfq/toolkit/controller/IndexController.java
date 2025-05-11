@@ -1,16 +1,19 @@
 package com.shengfq.toolkit.controller;
 
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.shengfq.toolkit.debounce.RequestKeyParam;
 import com.shengfq.toolkit.debounce.RequestLock;
 import com.shengfq.toolkit.pojo.AddReq;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ClassName: IndexController Description:
@@ -18,6 +21,7 @@ import com.shengfq.toolkit.pojo.AddReq;
  * @author shengfq
  * @date: 2025/4/16 19:25
  */
+@Slf4j
 @RestController
 public class IndexController {
   @PostMapping("/add")
@@ -27,9 +31,12 @@ public class IndexController {
     return new ResponseEntity<>("OK", HttpStatus.OK);
   }
 
-  @GetMapping("/login")
-  public ModelAndView login() {
-    return new ModelAndView("login", HttpStatus.OK);
+  @GetMapping("/log")
+  public ResponseEntity<String> pringLog() {
+    log.debug("this is debug trace {}", new Date());
+    log.warn("this is warn trace {}", new Date());
+    log.info("this is info trace {}", new Date());
+    return ResponseEntity.ok("");
   }
 
 
