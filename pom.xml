@@ -9,27 +9,27 @@
     <name>springboot-demo</name>
     <packaging>pom</packaging>
     <modules>
-        <!--<module>aop-spring-boot-demo</module>
-        <module>elasticsearch-spring-boot-demo</module>
-        <module>mybatis-spring-boot-demo</module>
-        <module>springboot-rabbitmq-consumer</module>
-        <module>springboot-rabbitmq-producer</module>
-        <module>pss-spring-boot-demo</module>
-        <module>redis-spring-boot-demo</module>
-        <module>shengfq-log-demo</module>
-        <module>shengfq-log-spring-boot-starter</module>
-        <module>shengfq-log-spring-boot-autoconfigure</module>
-        <module>fastdfs-spring-boot-demo</module>
-        <module>emqx-spring-boot-demo</module>
-        <module>mongodb-spring-boot-demo</module>
-        <module>netty-spring-boot-demo</module>
-        <module>spring-cloud-eureka-server</module>
-        <module>flinkcdc-spring-boot-demo</module>
-        <module>webserver-springboot-demo</module>
-        <module>multi-datasource-demo/jdbc-multi-datasource</module>
-        <module>undertow-spring-boot-demo</module>
-        <module>debounce-spring-boot-starter</module>-->
-
+        <module>aop-spring-boot-demo</module>
+        <!--   <module>elasticsearch-spring-boot-demo</module>
+           <module>mybatis-spring-boot-demo</module>
+           <module>springboot-rabbitmq-consumer</module>
+           <module>springboot-rabbitmq-producer</module>
+           <module>pss-spring-boot-demo</module>
+           <module>redis-spring-boot-demo</module>
+           <module>shengfq-log-demo</module>
+           <module>shengfq-log-spring-boot-starter</module>
+           <module>shengfq-log-spring-boot-autoconfigure</module>
+           <module>fastdfs-spring-boot-demo</module>
+           <module>emqx-spring-boot-demo</module>
+           <module>mongodb-spring-boot-demo</module>
+           <module>netty-spring-boot-demo</module>
+           <module>spring-cloud-eureka-server</module>
+           <module>flinkcdc-spring-boot-demo</module>
+           <module>webserver-springboot-demo</module>
+           <module>multi-datasource-demo/jdbc-multi-datasource</module>
+           <module>undertow-spring-boot-demo</module>
+           <module>debounce-spring-boot-starter</module>
+        <module>mybatis-spring-boot-demo</module>-->
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -204,6 +204,11 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>3.10.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>2.12.3</version>
             </dependency>
         </dependencies>
 
